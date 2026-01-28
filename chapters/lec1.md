@@ -19,21 +19,33 @@ for s in satellites:
         sum += record append(sum/len(res.records))
 ```
 
-But consider, what happens if one of our three satellites is down? wait\_response() may block forever! Also consider, are we wasting time? The answer is– probably yes\! Imagine that receiving a response can take anywhere from 1-6 seconds, and calculating the average takes about 1 second. Ideally, we would like to send all our requests out at the same time. 
+But consider, what happens if one of our three satellites is down? wait\_response() may block forever! 
 
-For example, if one satellite responds in 1 second, one responds in 4 seconds, and one responds in 2 seconds, how long would it take serially? 1+1 \+ 4 \+ 1+2+1=10 seconds\!
+Also consider, are we wasting time? The answer is– probably yes\! Imagine that receiving a response can take anywhere from 1-6 seconds, and calculating the average takes about 1 second. Ideally, we would like to send all our requests out at the same time. 
 
-But consider if we sent out all requests at the same time? Well, after 1 second we receive satellite\_1’s response, and calculate the average in additional 1 second. Right when we are done averaging we get satellite\_3’s response, and one second of averaging. And then finally, we receive satellite\_2’s response and average that one. How long is our process now? 1+1+1+1 (idle)+1 \= 5 seconds\!
+For example, if one satellite responds in 1 second, one responds in 4 seconds, and one responds in 2 seconds, how long would it take serially? 
 
-Clearly, in a distributed system where communication time is non negligible, it is important we write code in a way that it can be run simultaneously. Ideally, we would want three small programs running at once– one that sends messages and averages the response for each of the three satellites. This small program– can be called a **thread.** 
+<img src="figures/lec1-f2.svg"/>
 
-### 
+1+1 \+ 4 \+ 1+2+1=10 seconds\!
+
+But consider if we sent out all requests at the same time? 
+
+Well, after 1 second we receive satellite\_1’s response, and calculate the average in additional 1 second. Right when we are done averaging we get satellite\_3’s response, and one second of averaging. And then finally, we receive satellite\_2’s response and average that one. How long is our process now? 
+
+<img src="figures/lec1-f3.svg"/>
+
+
+1+1+1+1 (idle)+1 \= 5 seconds\!
+
+Clearly, in a distributed system where communication time is non negligible, it is important we write code in a way that it can be run simultaneously. Ideally, we would want three small programs running at once– one that sends messages and averages the response for each of the three satellites. This small program can be called a **thread.** 
+ 
 
 ### Threads and Processes
 
 What is a thread? In order to answer this question completely, we must remember from CS210, what is a **process?** 
 
-<div style="border:1px solid black; margin:10px; background-color:lightgray" markdown="1">
+<div style="border:1px solid black; padding:10px; background-color:lightgray" markdown="1">
 
 *A **process** is a running program. The **operating system** manages processes. The operating system allows many running processes to seamlessly share a fixed set of hardware devices. The operating system **interrupts** running processes and interleaves these running processes so that each process has a fair turn, running on the CPU. Deciding which processes run on the CPU is known as **scheduling.***
 
@@ -52,6 +64,34 @@ So how do we program a multi-threaded program? Golang, fortunately, is a languag
 **Goroutines** are similar, but not directly analogous to threads. Goroutines are the unit of concurrency in the go programming language. Like threads, they are scheduled independently meaning that they can run simultaneously or in an interleaved fashion when one goroutine is blocked. Also like threads, two goroutines of the same go process share memory, they can share any data that is in-scope for both function calls.
 
 Goroutines differ from threads in how they are scheduled and managed. Instead of the operating system scheduling goroutines, the **go runtime** is responsible for scheduling goroutines and schedules them on top of OS threads. Operating system scheduling is costly– to run OS code we need to perform a **context switch**, saving all information and interrupting the running process. However, the go runtime runs entirely in userspace, meaning that its scheduling decisions are much more efficient. The go runtime is free to switch go routines from running on top of one OS thread to another without a context switch. Because of this feature, **goroutines are lightweight compared to threads**, it is easy to have 100K goroutines without seeing memory problems or performance issues.
+
+<img src="figures/lec1-f1.svg"/>
+
+#### Go Routine Example
+
+```golang
+func worker(i int) {
+	fmt.Println(“%v”, i);
+}
+
+func main() {
+	for i:=0; i < 100; i++ {
+		go worker(i)
+    }
+// time.Sleep(1 * time.Second)
+}
+```
+
+Let's now consider the above snippet of code. 
+
+What would happen if we were to run this code sequentially (removing the `go` keyword)? In this case, we would see the numbers 0 to 100 printed in order.
+
+What happens if we run this code, as is, with the `time.Sleep` commented out? In this case, maybe a few numbers would print, but we would likely not see 100 numbers (or any numbers at all)! This behavior occurs because the `main` method of our go program may complete before all (or any) of our worker goroutines print!
+
+Now, what would happen if we run this code with the `time.Sleep` uncommented? In this case, all the numbers 0 to 100 would be printed, but not in order! The order in which the goroutines are scheduled/ran is dependent on the go runtime scheduler. We can not reason or guarantee this order.
+
+Notice, using time.Sleep is **poor practice**. Instead, it is better to opt to use concurrency control primitives in order to have one thread wait for another to complete.
+
 
 ### Concurrency Control Primitives
 
