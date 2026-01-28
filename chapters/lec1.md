@@ -10,12 +10,16 @@ Consider the following example. Let’s say we have three satellites and a comma
 
 If we write this serially, our program might look something like this:
 
-| CODE\_SECTION |
-| :---- |
-| for s in satellites: send\_msg(to: s, “update?”) res := wait\_response() sum := 0 for record in res.records: sum \+= record append(sum/len(res.records)) |
-| CODE\_SECTION\_END |
+```golang
+for s in satellites:
+    end_msg(to: s, "update?") 
+    res := wait_response() 
+    sum := 0 
+    for record in res.records: 
+        sum += record append(sum/len(res.records))
+```
 
-But consider, what happens if one of our three satellites is down? wait\_response() may block forever\! Also consider, are we wasting time? The answer is– probably yes\! Imagine that receiving a response can take anywhere from 1-6 seconds, and calculating the average takes about 1 second. Ideally, we would like to send all our requests out at the same time. 
+But consider, what happens if one of our three satellites is down? wait\_response() may block forever! Also consider, are we wasting time? The answer is– probably yes\! Imagine that receiving a response can take anywhere from 1-6 seconds, and calculating the average takes about 1 second. Ideally, we would like to send all our requests out at the same time. 
 
 For example, if one satellite responds in 1 second, one responds in 4 seconds, and one responds in 2 seconds, how long would it take serially? 1+1 \+ 4 \+ 1+2+1=10 seconds\!
 
@@ -29,9 +33,13 @@ Clearly, in a distributed system where communication time is non negligible, it 
 
 What is a thread? In order to answer this question completely, we must remember from CS210, what is a **process?** 
 
+<div style="border:1px solid black; margin:10px; background-color:lightgray" markdown="1">
+
 *A **process** is a running program. The **operating system** manages processes. The operating system allows many running processes to seamlessly share a fixed set of hardware devices. The operating system **interrupts** running processes and interleaves these running processes so that each process has a fair turn, running on the CPU. Deciding which processes run on the CPU is known as **scheduling.***
 
 *The operating system also facilitates the **isolation of memory** between processes. The operating system manages the **page table,** a data structure through which each memory lookup goes through. Processes have instructions with memory addresses. The addresses that the process uses are **virtual addresses.** These virtual addresses are then translated via the page table to **physical memory addresses** to lookup in RAM.*
+
+</div>
 
 So what is a **thread?** A process may have multiple threads (a process has a single thread by default). These threads are **scheduled independently** by the operating system. Two or more threads of the same process may run simultaneously or be arbitrarily interleaved. The decision of what thread to run at what time is up to the operating system. The operating system notes when threads are waiting for resources, like a response over the network, and can spend CPU time progressing on a different thread\!
 
@@ -51,26 +59,32 @@ When two or more concurrent threads access the same data, and one of those threa
 
 Consider the two following threads:
 
-| CODE\_SECTION |
-| :---- |
-| **Thread 1:** sum \= 2 \+ 4 \+ 6 print(“avg \=”, sum / 3\)  **Thread 2:** sum \= 7 \+ 3 print(“avg \=”, sum / 2\) |
-| CODE\_SECTION\_END |
+```python
+Thread 1: 
+    sum = 2 + 4 + 6
+    print("avg =", sum / 3)
+Thread 2:
+    sum = 7 + 3 
+    print("avg =", sum /2)
+```
 
 There are two shared variables, `sum` and `avg`, and perform reads and writes to both variables in the two threads. What might happen?
 
-| CODE\_SECTION |
-| :---- |
-| 4 5 |
-| CODE\_SECTION\_END |
+Serially, if we run thread 1 in it's entirety then, thread 2 in it's entirety, we would get the following:
 
+```
+avg = 4
+avg = 5
+```
 But what happens in the multi-threaded setting?
 
 Well, it is possible we set sum \= 12, then run thread 2, set sum \= 10, print avg \= 5, then finally print avg \= 10/3\!
 
-| CODE\_SECTION |
-| :---- |
-| 5 3.3333 |
-| CODE\_SECTION\_END |
+```
+avg = 5 
+avg = 3.3333
+```
+
 
 So how do we avoid unwanted data races? Well, there may be certain sections of code where we want **concurrency control.** Concurrency control involves limiting simultaneous execution of specific sections of critical code.
 
@@ -80,24 +94,35 @@ One tool for concurrency control is known as a **lock** or a **mutex** (standing
 
 A lock allows for only **one thread** to acquire the lock and progress past a blocking `lock` statement. Any other threads that call `lock` on that lock will block until the holding thread releases the lock.When a thread holding the lock calls `unlock` exactly one other thread may succeed in acquiring the lock and unblocking to progress.
 
-| CODE\_SECTION |
-| :---- |
-| **Thread 1: lock.Lock()** sum \= 2 \+ 4 \+ 6 avg \= sum / 3 print(avg) **lock.Unlock()**  **Thread 2: lock.Lock()** sum \= 7 \+ 3 avg \= sum / 2 print(avg) **lock.Unlock()** |
-| **CODe\_SECTION\_END** |
+```python
+# Thread 1: 
+    lock.Lock() 
+    sum = 2 + 4 + 6 
+    avg = sum / 3 
+    print("avg = ", avg) 
+    lock.Unlock() 
 
-With this scheme we may now see:
+# Thread 2: 
+    lock.Lock()
+    sum = 7 + 3 
+    avg = sum / 2 
+    print("avg = ", avg) 
+    lock.Unlock()
+```
 
-| CODE\_SECTION |
-| :---- |
-| 4 5 |
-| CODE\_SECTION\_END |
+With this scheme, if we run the two threads concurrently, we may now see:
+
+```
+avg = 4
+avg = 5
+```
 
 or we may also observe:
 
-| CODE\_SECTION |
-| :---- |
-| 5 4 |
-| CODE\_SECTION\_END |
+```
+avg = 5
+avg = 4
+```
 
 As it is possible that either thread may execute first, succeeding in acquiring the lock. However, it is not possible for the two threads to simultaneously execute the section in between the acquire/release statements.
 
