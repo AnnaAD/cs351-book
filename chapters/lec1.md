@@ -71,7 +71,7 @@ Goroutines differ from threads in how they are scheduled and managed. Instead of
 
 ```golang
 func worker(i int) {
-	fmt.Println(“%v”, i);
+	fmt.Println("%v", i);
 }
 
 func main() {
