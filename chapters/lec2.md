@@ -1,5 +1,3 @@
-## 
-
 ## Lecture 2: Communication Primitives
 
 How do computers within a distributed system communicate with each other? 
