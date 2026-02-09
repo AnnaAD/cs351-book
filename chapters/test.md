@@ -1,6 +1,6 @@
 # Check your knowledge!
 
-<!--quizdown-->
+<div class="quizdown">
 
 ## 1. What is Jekyll?
 *   [ ] A Python library
@@ -13,4 +13,4 @@
 *   [x] JavaScript
 *   [ ] Ruby
 
-<!--/quizdown-->
+</div>
