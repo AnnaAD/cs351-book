@@ -30,6 +30,8 @@ Then with the input data, map function, and reduce function, the user says “ok
 
 Below is an example of how the input data is transformed into intermediate key,value pairs, which are partitioned into reduce tasks– who produce the final output data. Note here we do not represent worker machines, only the TASKS that run and the input/output of each tasks. Below we have 2 map tasks and 3 reduce tasks. 
 
+<img src="figures/lec5-mapreduce-datapath.png"/>
+
 ### MapReduce Architecture: Coordinator and Workers
 
 So how is the MapReduce system designed?
