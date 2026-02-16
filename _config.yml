@@ -4,3 +4,8 @@ description: Detailed Lecture Notes
 
 github:
   is_project_page: true
+
+collections:
+  chapters:
+    output: true
+
