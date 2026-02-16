@@ -24,9 +24,11 @@
         <p>{{ site.description | default: site.github.project_tagline }}</p>
 
         {% for item in site.pages %}
+          {% if item.path contains "lec" %}
           <li>
               <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
           </li>
+          {% endif %}
         {% endfor %}
 
 
