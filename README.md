@@ -23,3 +23,4 @@ But, what is “correct” behavior? In a typical program, we take for granted t
 
 In this section we will also start to inspect how distributed systems are designed to continue to operate even when failures are present. Furthermore, we will study the problems of **synchronization** in distributed systems and use **timestamps** in order to reliably order causally related events in a system when real-time fails us.
 
+- [chapter 6](/chapters/lec6.md)
