@@ -37,11 +37,11 @@ The hardware in your computer uses this periodic signal to send an **interrupt s
 
 On top of this regularly triggering interrupt handler, we can implement a simple software clock by incrementing some counter each time the interrupt fires.
 
-| CODE\_SECTION |
-| :---- |
-| int clock\_handler() {     time\_of\_day \+= 1; } |
-| CODE\_SECTION\_END |
-
+```c
+int clock_handler() {
+    time_of_day += 1; 
+}
+```
 *An example of a simple C interrupt handler for the clock.*
 
 ### Problems with Distributed Clocks
