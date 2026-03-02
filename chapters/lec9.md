@@ -66,10 +66,22 @@ For example, with **strong consistency,** it would be disastrous to have a clien
 
 Notice that it is possible that multiple clients can request the primary at once– but there will be **one strict order of operations** on all replicas defined by the order the primary chooses to serve the requests and forward them to backups. 
 
-| ASIDE\_SECTION |
-| :---- |
-| *Aside: The Importance of Order of Operations*  If we have two requests arriving at roughly the same time: `put(x,10)` `put(x,20)` We want to ensure that on all replicas we agree on an order. If one replica ran `put(x,20), put(x,10)` and the other ran `put(x,10), put(x,20),`they would not agree on the final value of x (one saying it is 10, the other 20). So we can see it is important to agree on an order of operations.  Luckily, in primary backup, when our primary receives two requests, it decides on an order to process them. After sending out the first request, the primary **waits until all replicas have processed that request** before propagating the next request to replicas. Therefore, all replicas will have an identical order of requests. |
-| ASIDE\_SECTION\_END |
+<div style="border:1px solid black; padding:10px; background-color:lightgray" markdown="1">
+
+*Aside: The Importance of Order of Operations*  
+
+If we have two requests arriving at roughly the same time: `put(x,10)` `put(x,20)` We want to ensure that on all replicas we agree on an order. 
+
+If one replica ran `put(x,20), put(x,10)` and the other ran `put(x,10), put(x,20)` they would not agree on the final value of x (one saying it is 10, the other 20). 
+
+So we can see it is important to agree on an order of operations.  
+
+Luckily, in primary backup, when our primary receives two requests, it decides on an order to process them. After sending out the first request, the primary **waits until all replicas have processed that request** before propagating the next request to replicas. 
+
+Therefore, all replicas will have an identical order of requests.
+
+</div>
+
 
 ### Failures in Primary/Backup
 
