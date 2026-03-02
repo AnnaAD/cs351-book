@@ -15,7 +15,7 @@ Then, we will see how distributed systems lend themselves to highly parallel com
 - [chapter 5](/chapters/lec5.md)
 
 
-## Synchronization and Fault Tolerance
+# Synchronization and Fault Tolerance
 
 As we started to see with the inspection of MapReduce, when we have many servers and many messages being sent, failures become the expectation instead of the exception. Thus, we want to design systems that behave correctly even when failures are present. This desirable property is known as **fault tolerance.**
 
@@ -25,3 +25,27 @@ In this section we will also start to inspect how distributed systems are design
 
 - [chapter 6](/chapters/lec6.md)
 - [chapter 7](/chapters/lec7.md)
+- [chapter 8](/chapters/lec8.md)
+
+## Replication and Consensus
+
+One method to achieve fault tolerance is to have multiple **replicas** of a dataset or service at any one time. This way, if a single server fails, we can redirect clients to a working replica server instead. However, ensuring that all replicas stay up to date can prove difficult especially as messages are lost, or network **partitions** form. 
+
+In this section we discuss replication and some simple schemes for achieving a working replication protocol such as **primary/backup replication**. We will then move to discuss **distributed consensus protocols**, where we do not rely on any outside authority servers, and instead can achieve consensus strictly through **quorum** (voting) based protocols.
+
+
+- [chapter 9](/chapters/lec9.md)
+
+# Other Excellent Resources
+
+[https://book.mixu.net/distsys/index.html](https://book.mixu.net/distsys/index.html)   
+[https://lamport.azurewebsites.net/pubs/time-clocks.pdf](https://lamport.azurewebsites.net/pubs/time-clocks.pdf)   
+[https://research.google/pubs/mapreduce-simplified-data-processing-on-large-clusters/](https://research.google/pubs/mapreduce-simplified-data-processing-on-large-clusters/)   
+[https://jepsen.io/consistency/models](https://jepsen.io/consistency/models)   
+[http://nil.csail.mit.edu/6.824/2022/schedule.html](http://nil.csail.mit.edu/6.824/2022/schedule.html) 
+
+[http://nil.csail.mit.edu/6.824/2022/notes/l-cr.txt](http://nil.csail.mit.edu/6.824/2022/notes/l-cr.txt)   
+[http://nil.csail.mit.edu/6.824/2022/papers/vm-ft.pdf](http://nil.csail.mit.edu/6.824/2022/papers/vm-ft.pdf)   
+[https://www.cs.cornell.edu/home/rvr/papers/OSDI04.pdf](https://www.cs.cornell.edu/home/rvr/papers/OSDI04.pdf) 
+
+[https://www.distributed-systems.net/index.php/books/ds4/](https://www.distributed-systems.net/index.php/books/ds4/)
