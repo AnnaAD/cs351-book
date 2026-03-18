@@ -36,6 +36,8 @@ In this section we discuss replication and some simple schemes for achieving a w
 
 - [chapter 9](/chapters/lec9.md)
 - [chapter 10](/chapters/lec10.md)
+- [chapter 11](/chapters/lec11.md)
+
 
 # Other Excellent Resources
 
