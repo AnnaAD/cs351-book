@@ -39,6 +39,20 @@ In this section we discuss replication and some simple schemes for achieving a w
 - [chapter 11](/chapters/lec11.md)
 - [chapter 12](/chapters/lec12.md)
 
+## Consistency
+
+As we have seen in the previous sections, when we introduce replication into a distributed system, or data store, it is possible that clients may experience executions that would not exist on a single, local data store. For example, reads may return stale values when we switch to read from a different, out-dated, replica server. 
+
+
+A consistency model, for example, answers the question: is it okay that our system sometimes returns old values to clients? Or do all reads need to reflect the latest writes? Maybe we can return stale data, as long as we reflect the latest write that the client themselves has performed. 
+
+As distributed system engineers we get to decide what consistency guarantees our system provides and there is an inherent tradeoff: systems with stronger consistency models are more difficult to design to be performant and available, but systems with weaker consistency models can be difficult for clients to have correct behavior for their applications.
+
+In this section we will learn about different consistency models and understand how different real-world systems are designed to provide consistency.
+
+- [chapter 13](/chapters/lec13.md)
+
+
 
 # Other Excellent Resources
 
