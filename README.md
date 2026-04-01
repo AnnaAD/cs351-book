@@ -51,6 +51,7 @@ As distributed system engineers we get to decide what consistency guarantees our
 In this section we will learn about different consistency models and understand how different real-world systems are designed to provide consistency.
 
 - [chapter 13](/chapters/lec13.md)
+- [chapter 14](/chapters/lec14.md)
 
 
 
