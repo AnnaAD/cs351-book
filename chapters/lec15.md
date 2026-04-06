@@ -62,8 +62,7 @@ Thus, in implementing distributed transactions we must build a system where such
 Isolation is synonymous with a property known as **serializability.** Serializability is a consistency model that pertains to **transactions.** Linearizability and all other consistency models we discussed in the previous section only pertained to **single operations** and made no guarantees about transactions (groups of operations).
 
 <div style="border:1px solid black; padding:10px; background-color:lightgray" markdown="1"> 
-Serializability guarantees that even if transactions execute concurrently, the results are the same as if each transaction had executed in some serial order. Strict Serializability is a stronger model, which also guarantees that the serial order for the transactions respects the real time the transactions were committed by the client. 
-</div>
+Serializability guarantees that even if transactions execute concurrently, the results are the same as if each transaction had executed in some serial order. Strict Serializability is a stronger model, which also guarantees that the serial order for the transactions respects the real time the transactions were committed by the client.</div>
 
 ### Implementing Serializability
 
