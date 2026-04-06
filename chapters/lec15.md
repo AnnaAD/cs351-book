@@ -51,8 +51,9 @@ Today we will focus on how a system could support **isolated** distributed trans
 Consider that we have two concurrent transactions.   
 Our starting conditions: `x=100,y=100`
 
-| T1: BEGIN TXN add(x, 10\)  add(y, \-10) print(y)  END TXN | T2: BEGIN TXN  x1 \= get(x)  y1 \= get(y)  print(x1, y1) END TXN |
+| TXNs |  |
 | :---- | :---- |
+| <code> T1: <br/>BEGIN TXN <br/>add(x,10\) <br/> add(y,\-10)<br/> print(y) <br/> END TXN</code> | <code>T2:<br/> BEGIN TXN <br/> x1 = get(x) <br/> y1 = get(y) <br/> print(x1, y1)<br/> END TXN</code> |
 
 Consider that we have a T2 print that `x=110` and `y=100`. How could this occur? It seems that what happened was between line 2 and 3 of T1, T2 ran on our distributed store and *observed a partial result of T1.* This would mean that our transactions are **not isolated.** 
 
@@ -60,8 +61,9 @@ Thus, in implementing distributed transactions we must build a system where such
 
 Isolation is synonymous with a property known as **serializability.** Serializability is a consistency model that pertains to **transactions.** Linearizability and all other consistency models we discussed in the previous section only pertained to **single operations** and made no guarantees about transactions (groups of operations).
 
-| Serializability guarantees that even if transactions execute concurrently, the results are the same as if each transaction had executed in some serial order. Strict Serializability is a stronger model, which also guarantees that the serial order for the transactions respects the real time the transactions were committed by the client. |
-| :---- |
+<div style="border:1px solid black; padding:10px; background-color:lightgray" markdown="1"> 
+Serializability guarantees that even if transactions execute concurrently, the results are the same as if each transaction had executed in some serial order. Strict Serializability is a stronger model, which also guarantees that the serial order for the transactions respects the real time the transactions were committed by the client. 
+</div>
 
 ### Implementing Serializability
 
