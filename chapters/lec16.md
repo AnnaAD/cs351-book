@@ -123,6 +123,8 @@ As an effect of our usage of “sloppy quorums” we get the benefit that writes
 
 For example, one client may get a stale version of the data, perform some change and now we have **branching data versioning.**
 
+![](figures/lec16-1.png)
+
 Consider the above scenario: client 1 contacts two servers, reads that cart1 is empty and then adds a book to the cart. Then client 2 reads the same cart but from a different two servers, and gets a stale read (cart being empty). Client 2 then adds a lamp to the stale cart. 
 
 Finally, we must ask: what should happen when client3 reads cart1? In this case our data version has forked– and really neither version is more ‘up-to-date’. In fact, we now have two causally independent branches of the data\!
