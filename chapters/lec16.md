@@ -113,6 +113,8 @@ We notice an interesting effect when we set `R,W,N` such that: `R + W > N`. The 
 
 However, remember that our quorum is “sloppy” because in the case of failures, this R sized group and this W sized group may come from **different sets of N servers in total.** This property can cause us to return **stale data** some of the time**.**
 
+![](figures/lec16-2.png)
+
 1) `R=2,W=2,N=3`. Client A submits a put operation, switching x to green. Two servers are unreachable, so Dynamo replicates the operation on G,F,E instead (W=3,N=3).  
 2) The data object is updated on GFE. G,F mark the object for hinted handoff  
 3) Before handoff occurs, client B performs a read, contacting the original 3 servers. However, E’s message is lost. The read succeeds with R=2, and the client retrieves old data.
