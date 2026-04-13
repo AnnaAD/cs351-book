@@ -2,7 +2,7 @@
 
 This is a collection of detailed lecture notes for BU's CS351.
 
-# Processes, Communication, Parallelism
+## Processes, Communication, Parallelism
 
 In order to design a distributed system, we need a mechanism for **communication over the network**. Unfortunately, communication is not instantaneous which lends itself to the need to **concurrently** perform computation *while* we wait for that communication to occur. For beginner programmers, this can be a big shift away from the types of programs we have written thus far. Thus, we will dive into how to write a **multi-threaded process** within a distributed system– a key building block in an efficient distributed system.
 
@@ -15,7 +15,7 @@ Then, we will see how distributed systems lend themselves to highly parallel com
 - [chapter 5](/chapters/lec5.md)
 
 
-# Synchronization and Fault Tolerance
+## Synchronization and Fault Tolerance
 
 As we started to see with the inspection of MapReduce, when we have many servers and many messages being sent, failures become the expectation instead of the exception. Thus, we want to design systems that behave correctly even when failures are present. This desirable property is known as **fault tolerance.**
 
@@ -52,6 +52,20 @@ In this section we will learn about different consistency models and understand 
 
 - [chapter 13](/chapters/lec13.md)
 - [chapter 14](/chapters/lec14.md)
+- [chapter 16](/chapters/lec16.md)
+
+## Distributed Transactions
+
+Some distributed systems need even stronger consistency guarantees-- instead of making claims about only the results and effects of single operations, it may be useful to have claims about groups of operations (i.e. transactions).
+
+In this section you will learn:
+- What is a transaction? 
+- How can we ensure that distributed transactions are isolated and atomic?
+- How does a real-world system (Spanner) implement distributed transactions without sacrificing performance? 
+
+- [chapter 15](/chapters/lec15.md)
+- [chapter 17](/chapters/lec17.md)
+
 
 
 
