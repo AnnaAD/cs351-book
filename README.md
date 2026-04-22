@@ -65,6 +65,7 @@ In this section you will learn:
 
 - [chapter 15](/chapters/lec15.md)
 - [chapter 17](/chapters/lec17.md)
+- [chapter 18](/chapters/lec18-19.md)
 
 
 
