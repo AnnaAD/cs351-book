@@ -1,6 +1,4 @@
-# BONUS Lecture 8: Failure Recovery and Snapshotting
-
-**Note: This material was not covered Spring 2026**
+# Lecture 8: Failure Recovery and Snapshotting
 
 Now, we will move on to discuss failure recovery (such as in a crash-recover) model through distributed snapshotting. Again, we wish to capture some moment in our distributed system, saving the state of each component/machine, then when we install the snapshot, each component restores their state to the saved version.
 
